@@ -83,28 +83,47 @@ public class SpotifyRepository {
     }
 
     public Album createAlbum(String title, String artistName) {
-        boolean isArtistExist;
+       // boolean isArtistExist;
+//        for(Album album : albums){
+//            if(album.getTitle().equals(title))
+//                return album;
+//        }
+//        Artist artist=new Artist();
+//        if(!isArtistExist(artistName))
+//        {
+//            artist = new Artist(artistName);
+//        }
+//        else {
+//            artist = getArtists(artistName);
+//        }
+//       //putting album
+//        Album album = new Album(title);
+//        albums.add(album);
+//
+//        //putting in artist-album map
+//        List albumList = artistAlbumMap.getOrDefault(artist,new ArrayList<>());
+//        albumList.add(album);
+//        artistAlbumMap.put(artist,albumList);
+//
+//        return album;
+
+        Artist artist= createArtist(artistName);
         for(Album album : albums){
             if(album.getTitle().equals(title))
                 return  album;
         }
-        Artist artist;
-        if(!isArtistExist(artistName))
-        {
-            artist = new Artist(artistName);
-        }
-        else {
-            artist=getArtists(artistName);
-        }
-       //putting album
+        //create new album
         Album album = new Album(title);
+        //adding album to listDB
         albums.add(album);
 
-        //putting in artist-album map
-        List albumList = artistAlbumMap.getOrDefault(artist,new ArrayList<>());
-        albumList.add(album);
-        artistAlbumMap.put(artist,albumList);
-
+        //putting artis and album in DB
+        List<Album> alb = new ArrayList<>();
+        if(artistAlbumMap.containsKey(artist)){
+            alb=artistAlbumMap.get(artist);
+        }
+        alb.add(album);
+        artistAlbumMap.put(artist,alb);
         return album;
     }
 
