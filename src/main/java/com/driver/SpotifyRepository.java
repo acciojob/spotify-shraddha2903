@@ -207,8 +207,17 @@ public class SpotifyRepository {
         {
             throw new Exception("Playlist does not exist");
         }
-        Playlist playlist = getPlayListByTitle(playlistTitle);
+        //Playlist playlist = getPlayListByTitle(playlistTitle);
         User user = getUserByMobileNumer(mobile);
+         List<Playlist> playlist_List = userPlaylistMap.get(user);
+        Playlist playlist = new Playlist();
+        for (Playlist list : playlist_List)
+        {
+            if(list.getTitle().equals(playlistTitle))
+            {
+                playlist=list;
+            }
+        }
         if(!isUserCreator(user) && !isUserListener(user))
         {
             addPlayListListener(playlist,user);
