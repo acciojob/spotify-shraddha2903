@@ -38,12 +38,21 @@ public class SpotifyRepository {
     }
 
     public User createUser(String name, String mobile) {
+        for(User curUser: users){
+            if(curUser.getMobile().equals(mobile)){
+                return curUser;
+            }
+        }
         User user_obj = new User(name,mobile);
         users.add(user_obj);
         return user_obj;
     }
 
     public Artist createArtist(String name) {
+        for(Artist artist: artists){
+            if(artist.getName().equals(name))
+                return artist;
+        }
         Artist artist = new Artist(name);
         artists.add(artist);
         return artist;
@@ -75,6 +84,10 @@ public class SpotifyRepository {
 
     public Album createAlbum(String title, String artistName) {
         boolean isArtistExist;
+        for(Album album : albums){
+            if(album.getTitle().equals(title))
+                return  album;
+        }
         Artist artist;
         if(!isArtistExist(artistName))
         {
@@ -189,7 +202,8 @@ public class SpotifyRepository {
         if(userList.isEmpty())
         {
             userList.add(user);
-            song.setLikes(song.getLikes()+1);
+            int lk=song.getLikes();
+            song.setLikes(lk+1);
         }
         else {
             boolean liked=false;
@@ -199,8 +213,8 @@ public class SpotifyRepository {
                 }
                 if(!liked){
                     userList.add(user);
-                    song.setLikes(song.getLikes()+1);
-
+                    int lk=song.getLikes();
+                    song.setLikes(lk+1);
                 }
             }
         }
@@ -208,7 +222,8 @@ public class SpotifyRepository {
         ///updating artist likes
         Album album = getalbumBySongTitle(songTitle);
         Artist artist = getArtistByAlbumName(album.getTitle());
-        artist.setLikes(artist.getLikes()+1);
+        int likes=artist.getLikes();
+        artist.setLikes(likes+1);
 
         return song;
 
