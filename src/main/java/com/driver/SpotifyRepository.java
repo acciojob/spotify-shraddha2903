@@ -127,12 +127,18 @@ public class SpotifyRepository {
 
     public Playlist createPlaylistOnLength(String mobile, String title, int length) throws Exception {
 
+        for(Playlist playlist : playlists){
+            if(playlist.getTitle().equals(title))
+                return  playlist;
+        }
+
         if(!isUserExist(mobile))
         {
             throw new Exception("User does not exist");
         }
         List<Song> songListOflength = getSongListOfGivenLength(length);
         Playlist playlist = new Playlist(title);
+        playlists.add(playlist);
         playlistSongMap.put(playlist,songListOflength);
         User user = getUserByMobileNumer(mobile);
         //add in playlist listener map
@@ -149,6 +155,10 @@ public class SpotifyRepository {
 
     public Playlist createPlaylistOnName(String mobile, String title, List<String> songTitles) throws Exception {
 
+        for(Playlist playlist : playlists){
+            if(playlist.getTitle().equals(title))
+                return  playlist;
+        }
         if(!isUserExist(mobile))
         {
             throw new Exception("User does not exist");
@@ -233,13 +243,13 @@ public class SpotifyRepository {
     public String mostPopularArtist() {
         int max = Integer.MIN_VALUE;
         String name="";
-        for(Artist artist : artists)
-        {
-            if(artist.getLikes()>max)
-            {
-                max= artist.getLikes();
-                name = artist.getName();
-
+        int maxLikes = Integer.MIN_VALUE;
+        for(Artist art : artists){
+            maxLikes= Math.max(maxLikes,art.getLikes());
+        }
+        for(Artist art : artists){
+            if(maxLikes==art.getLikes()){
+                name=art.getName();
             }
         }
         return name;
@@ -248,14 +258,13 @@ public class SpotifyRepository {
     public String mostPopularSong() {
         int max = Integer.MIN_VALUE;
         String name="";
-        for(Song song : songs)
-        {
-            if(song.getLikes()>max)
-            {
-                max= song.getLikes();
-                name = song.getTitle();
-
-            }
+        int maxLikes = Integer.MIN_VALUE;
+        for(Song song : songs){
+            maxLikes=Math.max(maxLikes,song.getLikes());
+        }
+        for(Song song : songs){
+            if(maxLikes==song.getLikes())
+                name=song.getTitle();
         }
         return name;
     }
